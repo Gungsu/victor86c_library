@@ -1,4 +1,3 @@
-"""
 # VICTOR 86C/86D Multimeter Parser
 
 A Python library for parsing and decoding the serial data stream from **VICTOR 86C** and **VICTOR 86D** digital multimeters (DMM).
@@ -108,4 +107,3 @@ Contributions are welcome! If you have a VICTOR 86C/86D and find a symbol or mod
 ## 📄 License
 
 This project is licensed under the MIT License.
-"""
