@@ -1,0 +1,8 @@
+README.md
+setup.py
+victor86c_parser/__init__.py
+victor86c_parser/parser.py
+victor86c_parser.egg-info/PKG-INFO
+victor86c_parser.egg-info/SOURCES.txt
+victor86c_parser.egg-info/dependency_links.txt
+victor86c_parser.egg-info/top_level.txt

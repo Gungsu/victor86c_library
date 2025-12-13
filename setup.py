@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='victor86c_parser',
-    version='1.0.0',
+    version='1.0.1',
     description='Biblioteca Python para decodificar o protocolo de comunicação serial do multímetro VICTOR 86C/86D.',
     author='Amaur Baptista Moreira de Deus',
     author_email='adeus.sjp@gmail.com',

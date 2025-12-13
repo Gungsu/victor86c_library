@@ -17,7 +17,7 @@ This library was developed through reverse engineering of the 14-byte data packe
 To install the library locally, navigate to the project directory (where `setup.py` is located) and run:
 
 ```bash
-pip install .
+pip install victor86c_parser
 ```
 
 ## 🛠️ Usage

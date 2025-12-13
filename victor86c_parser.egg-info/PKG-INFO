@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: victor86c_parser
+Version: 1.0.0
+Summary: Biblioteca Python para decodificar o protocolo de comunicação serial do multímetro VICTOR 86C/86D.
+Author: Amaur Baptista Moreira de Deus
+Author-email: adeus.sjp@gmail.com
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: requires-python
+Dynamic: summary
