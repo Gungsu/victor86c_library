@@ -1,9 +1,38 @@
-VICTOR 86C/86D Multimeter ParserA Python library for parsing and decoding the serial data stream from VICTOR 86C and VICTOR 86D digital multimeters (DMM).This library was developed through reverse engineering of the 14-byte data packets sent by the multimeter's USB/Serial interface, enabling developers to easily integrate the multimeter into Python applications for data logging, automation, and monitoring.🚀 FeaturesReal-time Decoding: Parses raw 14-byte hex packets into readable floating-point values.Unit & Mode Detection: Automatically detects measurement units (V, A, Ohm, Hz, etc.) and modes (AC, DC, HOLD, MAX/MIN).Symbol Support: Identifies special symbols like AUTO, DIODE, BEEP, and prefixes (m, u, k, M).Bargraph Data: Extracts the analog bargraph value (0-42).Lightweight: Pure Python implementation with no heavy dependencies.📦 InstallationTo install the library locally, navigate to the project directory (where setup.py is located) and run:pip install .
-🛠️ UsageBasic UsageYou can easily decode a raw packet and get the final measurement value and unit string.from victor86c_parser import Victor86cParser
+"""
+# VICTOR 86C/86D Multimeter Parser
+
+A Python library for parsing and decoding the serial data stream from **VICTOR 86C** and **VICTOR 86D** digital multimeters (DMM).
+
+This library was developed through reverse engineering of the 14-byte data packets sent by the multimeter's USB/Serial interface, enabling developers to easily integrate the multimeter into Python applications for data logging, automation, and monitoring.
+
+## 🚀 Features
+
+* **Real-time Decoding:** Parses raw 14-byte hex packets into readable floating-point values.
+* **Unit & Mode Detection:** Automatically detects measurement units (V, A, Ohm, Hz, etc.) and modes (AC, DC, HOLD, MAX/MIN).
+* **Symbol Support:** Identifies special symbols like `AUTO`, `DIODE`, `BEEP`, and prefixes (`m`, `u`, `k`, `M`).
+* **Bargraph Data:** Extracts the analog bargraph value (0-42).
+* **Lightweight:** Pure Python implementation with no heavy dependencies.
+
+## 📦 Installation
+
+To install the library locally, navigate to the project directory (where `setup.py` is located) and run:
+
+```bash
+pip install .
+```
+
+## 🛠️ Usage
+
+### Basic Usage
+
+You can easily decode a raw packet and get the final measurement value and unit string.
+
+```python
+from victor86c_parser import Victor86cParser
 
 # Example raw packet (14 bytes) received from serial
 # Represents: 0.017 A (DC)
-raw_packet = b'+0017 \x001\x00\x00@\x00'
+raw_packet = b'+0017 \\x001\\x00\\x00@\\x00'
 
 # Create a parser instance
 parser = Victor86cParser(raw_packet)
@@ -15,7 +44,14 @@ mode = parser.get_mode()
 
 print(f"Reading: {value} {unit} ({mode})")
 # Output: Reading: 0.017 A (DC)
-Serial Monitor ExampleHere is a simple example of how to read from the serial port and decode data in real-time using pyserial.import serial
+```
+
+### Serial Monitor Example
+
+Here is a simple example of how to read from the serial port and decode data in real-time using `pyserial`.
+
+```python
+import serial
 from victor86c_parser import Victor86cParser
 
 # Configure your serial port (Windows: 'COMx', Linux: '/dev/ttyUSBx')
@@ -46,4 +82,30 @@ try:
 except KeyboardInterrupt:
     print("Stopped.")
     ser.close()
-📚 Protocol DocumentationThe VICTOR 86C sends a 14-byte packet followed by \r\n (CRLF) continuously (approx. 2-3 times/sec).Byte IndexBitDescriptionExample Values00Sign (+/-)+, -1-41-4Numeric Digits0017 (ASCII)55Space/Separator      (Space)66Decimal Point1 (/1000), 2 (/100), 4 (/10)77Measurement Mode1 (DC), ) (AC), ! (AUTO), # (AUTO HOLD)88MAX/MIN Indicator\x20 (MAX), \x10 (MIN)99Prefix/Symbol\x10 (M), @ (m), \x80 (u), \x01 (k)1010Base Unit2 (C), 1 (F), @ (A), \x80 (V),       (Ohms)1111Analog BargraphInteger value (0-42)12-13-Terminators\r\n🤝 ContributingContributions are welcome! If you have a VICTOR 86C/86D and find a symbol or mode that isn't mapped correctly, please open an issue or submit a pull request with the raw hex data and the expected display value.📄 LicenseThis project is licensed under the MIT License.
+```
+
+## 📚 Protocol Documentation
+
+The VICTOR 86C sends a **14-byte** packet followed by `\\r\\n` (CRLF) continuously (approx. 2-3 times/sec).
+
+| Byte Index | Bit | Description | Example Values |
+| :---: | :---: | :--- | :--- |
+| **0** | `0` | Sign (+/-) | `+`, `-` |
+| **1-4** | `1-4` | Numeric Digits | `0017` (ASCII) |
+| **5** | `5` | Space/Separator | ` ` (Space) |
+| **6** | `6` | Decimal Point | `1` (/1000), `2` (/100), `4` (/10) |
+| **7** | `7` | Measurement Mode | `1` (DC), `)` (AC), `!` (AUTO), `#` (AUTO HOLD) |
+| **8** | `8` | MAX/MIN Indicator | `\\x20` (MAX), `\\x10` (MIN) |
+| **9** | `9` | Prefix/Symbol | `\\x10` (M), `@` (m), `\\x80` (u), `\\x01` (k) |
+| **10** | `10` | Base Unit | `2` (C), `1` (F), `@` (A), `\\x80` (V), ` ` (Ohms) |
+| **11** | `11` | Analog Bargraph | Integer value (0-42) |
+| **12-13** | - | Terminators | `\\r\\n` |
+
+## 🤝 Contributing
+
+Contributions are welcome! If you have a VICTOR 86C/86D and find a symbol or mode that isn't mapped correctly, please open an issue or submit a pull request with the raw hex data and the expected display value.
+
+## 📄 License
+
+This project is licensed under the MIT License.
+"""
