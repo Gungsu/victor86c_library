@@ -7,10 +7,12 @@
 MODE_MAP = {
     b'1': 'DC',          # 1: DC
     b'\x11': 'DC',       # 11 hex: DC
+    b'\x10': 'DC',       # 10 hex: DC
     b')': 'AC',          # ): AC
     b'\t': 'AC',
     b'\x08': 'AC',       
     b'!': 'AUTO',        # !: NADA (geralmente indica AUTO)
+    b' ': 'AUTO',        # !: NADA (geralmente indica AUTO)
     b'#': 'AUTO HOLD',   # #: AUTO HOLD
     b'\x02': 'HOLD',     # 02 hex: HOLD
     b'3': 'HOLD',        # 3: HOLD
@@ -31,11 +33,12 @@ MAX_MIN_MAP = {
 
 # Mapeamento do Byte 10 (Índice 9): Prefixos e Símbolos
 PREFIX_MAP = {
+    b'\x00': 'n',       # Nano (n)
     b'\x10': 'M',        # Mega (M)
     b'@': 'm',           # Mili (m)
     b'\x80': 'u',        # Micro (u)
-    b'\x04': 'DIODE',    # Símbolo de diodo (-->|)
-    b'\x08': 'BEEP',     # Símbolo de beep
+    b'\x04': 'DIODE ',    # Símbolo de diodo (-->|)
+    b'\x08': 'BEEP ',     # Símbolo de beep
     b'\x01': 'K',        # Kilo (K)
     b' ': '',            # Nenhum prefixo
 }
