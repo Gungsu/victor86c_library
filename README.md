@@ -87,18 +87,18 @@ except KeyboardInterrupt:
 
 The VICTOR 86C sends a **14-byte** packet followed by `\\r\\n` (CRLF) continuously (approx. 2-3 times/sec).
 
-| Byte Index | Bit | Description | Example Values |
+| Byte Index | Bit | Description | Example Values (Hex Bitmasks) |
 | :---: | :---: | :--- | :--- |
-| **0** | `0` | Sign (+/-) | `+`, `-` |
-| **1-4** | `1-4` | Numeric Digits | `0017` (ASCII) |
-| **5** | `5` | Space/Separator | ` ` (Space) |
-| **6** | `6` | Decimal Point | `1` (/1000), `2` (/100), `4` (/10) |
+| **0** | `0` | Sign (+/-) | `+`, `-` (ASCII) |
+| **1-4** | `1-4` | Numeric Digits | `0`-`9` (ASCII) |
+| **5** | `5` | Space/Separator | ` ` (ASCII Space) |
+| **6** | `6` | Decimal Point | `1` (/1000), `2` (/100), `4` (/10) (ASCII) |
 | **7** | `7` | Mode Bitmask | `0x20` (AUTO), `0x10` (DC), `0x08` (AC), `0x04` (REL), `0x02` (HOLD) |
-| **8** | `8` | MAX/MIN Indicator | `\\x20` (MAX), `\\x10` (MIN) |
-| **9** | `9` | Prefix/Symbol | `\\x10` (M), `@` (m), `\\x80` (u), `\\x01` (k) |
-| **10** | `10` | Base Unit | `2` (C), `1` (F), `@` (A), `\\x80` (V), ` ` (Ohms) |
+| **8** | `8` | MAX/MIN Bitmask | `0x20` (MAX), `0x10` (MIN) |
+| **9** | `9` | Prefix Bitmask | `0x80` (µ), `0x40` (m), `0x20` (k), `0x10` (M), `0x08` (Beep), `0x04` (Diode), `0x01` (None/Nano*) |
+| **10** | `10` | Unit Bitmask | `0x80` (V), `0x40` (A), `0x20` (Ω), `0x10` (hFE), `0x08` (Hz), `0x04` (F), `0x02` (°C), `0x01` (°F), `0x00` (%) |
 | **11** | `11` | Analog Bargraph | Integer value (0-42) |
-| **12-13** | - | Terminators | `\\r\\n` |
+| **12-13** | - | Terminators | `\r\n` |
 
 ## 🤝 Contributing
 

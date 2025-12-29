@@ -3,38 +3,6 @@
 # Este arquivo contém a lógica de decodificação do protocolo VICTOR 86C
 # Usa o novo mapeamento de bytes para retornar dados estruturados
 
-# Mapeamento do Byte 9 (Índice 8): Indicador MAX/MIN
-MAX_MIN_MAP = {
-    b'\x20': 'MAX',
-    b'\x10': 'MIN',
-    b'\x00': '',
-    b' ': 'MAX',
-}
-
-# Mapeamento do Byte 10 (Índice 9): Prefixos e Símbolos
-PREFIX_MAP = {
-    b'\x00': 'n',       # Nano (n)
-    b'\x10': 'M',        # Mega (M)
-    b'@': 'm',           # Mili (m)
-    b'\x80': 'u',        # Micro (u)
-    b'\x04': 'DIODE ',    # Símbolo de diodo (-->|)
-    b'\x08': 'BEEP ',     # Símbolo de beep
-    b'\x01': 'K',        # Kilo (K)
-    b' ': '',            # Nenhum prefixo
-}
-
-# Mapeamento do Byte 11 (Índice 10): Unidades Base
-UNIT_MAP = {
-    b'2': 'C',
-    b'1': 'F',
-    b'@': 'A',
-    b'\x80': 'V',
-    b'\x04': 'F',
-    b'\x08': 'Hz',
-    b'\x02': 'ºC',
-    b' ': 'Ohms',
-}
-
 class Victor86cParser:
     """
     Classe utilitária para decodificar e acessar dados de um pacote
@@ -55,6 +23,8 @@ class Victor86cParser:
             'value_raw': None,
             'decimal_position': 0,
             'prefix': '',
+            'is_beep': False,
+            'is_diode': False,
             'unit': '',
             'mode': '',
             'is_auto': False,
@@ -122,13 +92,64 @@ class Victor86cParser:
         data['mode'] = " ".join(modes) if modes else "Unknown"
         
         # --- 5. MODO MAX/MIN (Bit 9 / Índice 8) ---
-        data['max_min'] = MAX_MIN_MAP.get(self._packet[8:9], '')
+        byte_max_min = self._packet[8]
+        data['max_min'] = '' # Valor padrão
+
+        if byte_max_min & 0x20:   # Bit 5
+            data['max_min'] = 'MAX'
+        elif byte_max_min & 0x10: # Bit 4
+            data['max_min'] = 'MIN'
 
         # --- 6. Símbolos/Prefixos (Bit 10 / Índice 9) ---
-        data['prefix'] = PREFIX_MAP.get(self._packet[9:10], '')
+        byte_prefix = self._packet[9]
+                
+        # Unidades de Grandeza (Geralmente excludentes, usamos elif)
+        if byte_prefix & 0x10:   # Bit 4
+            data['prefix'] = 'M'
+        elif byte_prefix & 0x01: # Bit 0
+            data['prefix'] = ''
+        elif byte_prefix & 0x40: # Bit 6
+            data['prefix'] = 'm'
+        elif byte_prefix & 0x80: # Bit 7
+            data['prefix'] = 'u'
+        elif byte_prefix & 0x20: # Bit 5
+            data['prefix'] = 'k'
+        elif byte_prefix == 0x00:
+            data['prefix'] = ' '
+
+        # Símbolos de Função (Podem ocorrer junto com prefixos?)
+        if byte_prefix & 0x08: # Bit 3
+            data['is_beep'] = True
+            # O beep pode ser tratado como um modo ou símbolo separado
+            
+        if byte_prefix & 0x04: # Bit 2
+            data['is_diode'] = True
 
         # --- 7. Unidade Base (Bit 11 / Índice 10) ---
-        data['unit'] = UNIT_MAP.get(self._packet[10:11], 'Unknown')
+        byte_unit = self._packet[10]
+        data['unit'] = ''
+        
+        # Unidades são geralmente exclusivas, então usamos if/elif
+        if byte_unit & 0x80:   # Bit 7
+            data['unit'] = 'V'
+        elif byte_unit & 0x40: # Bit 6
+            data['unit'] = 'A'
+        elif byte_unit & 0x20: # Bit 5
+            data['unit'] = 'Ohms'
+        elif byte_unit & 0x10: # Bit 4
+            data['unit'] = 'hFE'
+        elif byte_unit & 0x08: # Bit 3
+            data['unit'] = 'Hz'
+        elif byte_unit & 0x04: # Bit 2
+            data['unit'] = 'F' # Farad
+            if data['prefix'] == ' ':
+                data['prefix'] = 'n' # Ajusta para nF se sem prefixo
+        elif byte_unit & 0x02: # Bit 1
+            data['unit'] = '°C'
+        elif byte_unit & 0x01: # Bit 0
+            data['unit'] = '°F'
+        elif byte_unit == 0x00:
+            data['unit'] = '%'
 
         # --- 8. Barra Inferior (Bit 12 / Índice 11) ---
         try:
