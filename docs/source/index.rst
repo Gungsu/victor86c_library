@@ -14,7 +14,7 @@ This library provides a Python interface for parsing and decoding the serial dat
 
    modules
 
-.. include:: ../../README.md
+.. include:: README.md
    :parser: myst_parser.sphinx_
 
 Indices and tables
