@@ -93,7 +93,7 @@ The VICTOR 86C sends a **14-byte** packet followed by `\\r\\n` (CRLF) continuous
 | **1-4** | `1-4` | Numeric Digits | `0017` (ASCII) |
 | **5** | `5` | Space/Separator | ` ` (Space) |
 | **6** | `6` | Decimal Point | `1` (/1000), `2` (/100), `4` (/10) |
-| **7** | `7` | Measurement Mode | `1` (DC), `)` (AC), `!` (AUTO), `#` (AUTO HOLD) |
+| **7** | `7` | Mode Bitmask | `0x20` (AUTO), `0x10` (DC), `0x08` (AC), `0x04` (REL), `0x02` (HOLD) |
 | **8** | `8` | MAX/MIN Indicator | `\\x20` (MAX), `\\x10` (MIN) |
 | **9** | `9` | Prefix/Symbol | `\\x10` (M), `@` (m), `\\x80` (u), `\\x01` (k) |
 | **10** | `10` | Base Unit | `2` (C), `1` (F), `@` (A), `\\x80` (V), ` ` (Ohms) |

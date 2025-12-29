@@ -60,7 +60,7 @@ def monitorar_serial():
                     parser = Victor86cParser(pacote_dados)
                     
                     print(f"Pacote Dados (14b): {parser.get_raw_slice(0,14)}")
-                    print(f"Pacote Dados (14b): {parser.get_raw_slice(7,8)}")
+                    #print(f"Pacote Dados (14b): {parser.get_raw_slice(7,8)}")
                     
                     # 3. Extrair os dados usando os métodos da classe
                     valor_final = parser.get_measurement_value()

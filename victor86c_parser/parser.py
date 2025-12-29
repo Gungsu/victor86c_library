@@ -3,31 +3,11 @@
 # Este arquivo contém a lógica de decodificação do protocolo VICTOR 86C
 # Usa o novo mapeamento de bytes para retornar dados estruturados
 
-# Mapeamento do Byte 7 (Índice 7): Modos AC/DC/HOLD/AUTO
-MODE_MAP = {
-    b'1': 'DC',          # 1: DC
-    b'\x11': 'DC',       # 11 hex: DC
-    b'\x10': 'DC',       # 10 hex: DC
-    b')': 'AC',          # ): AC
-    b'\t': 'AC',
-    b'\x08': 'AC',       
-    b'!': 'AUTO',        # !: NADA (geralmente indica AUTO)
-    b' ': 'AUTO',        # !: NADA (geralmente indica AUTO)
-    b'#': 'AUTO HOLD',   # #: AUTO HOLD
-    b'\x02': 'HOLD',     # 02 hex: HOLD
-    b'3': 'HOLD',        # 3: HOLD
-    b'\x0b': 'HOLD',     # HOLD AC DC (exemplo de combinação)
-    b'\x13': 'HOLD',
-    b'"': 'HOLD',
-    b'\x00': '',         # Nenhum modo específico
-    b'\x01': '',
-}
-
 # Mapeamento do Byte 9 (Índice 8): Indicador MAX/MIN
 MAX_MIN_MAP = {
     b'\x20': 'MAX',
     b'\x10': 'MIN',
-    b'\x00': '', # Nenhum
+    b'\x00': '',
     b' ': 'MAX',
 }
 
@@ -77,6 +57,9 @@ class Victor86cParser:
             'prefix': '',
             'unit': '',
             'mode': '',
+            'is_auto': False,
+            'is_rel': False,
+            'is_hold': False,
             'max_min': '',
             'bargraph': 0,
             'sign': 1, # 1 para positivo, -1 para negativo
@@ -112,7 +95,31 @@ class Victor86cParser:
             pass 
 
         # --- 4. Modo de Medição (Bit 8 / Índice 7) ---
-        data['mode'] = MODE_MAP.get(self._packet[7:8], 'Unknown')
+        byte_mode = self._packet[7] 
+        
+        modes = []
+        
+        # Lógica Bitwise confirmada nos testes
+        if byte_mode & 0x20: # Bit 5
+            data['is_auto'] = True
+            modes.append("AUTO")
+            
+        if byte_mode & 0x10: # Bit 4
+            modes.append("DC")
+            
+        if byte_mode & 0x08: # Bit 3
+            modes.append("AC")
+            
+        if byte_mode & 0x04: # Bit 2 (REL/Delta)
+            data['is_rel'] = True
+            modes.append("REL")
+            
+        if byte_mode & 0x02: # Bit 1
+            data['is_hold'] = True
+            modes.append("HOLD")
+            
+        # Junta tudo em uma string (ex: "AUTO AC REL")
+        data['mode'] = " ".join(modes) if modes else "Unknown"
         
         # --- 5. MODO MAX/MIN (Bit 9 / Índice 8) ---
         data['max_min'] = MAX_MIN_MAP.get(self._packet[8:9], '')
