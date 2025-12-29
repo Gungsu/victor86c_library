@@ -33,12 +33,19 @@ release = '1.0.2'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',      # Gera doc a partir das docstrings
-    'sphinx.ext.napoleon',     # Suporta docstrings estilo Google/NumPy
-    'sphinx.ext.viewcode',     # Adiciona links para o código fonte
-    'sphinx.ext.githubpages',  # Cria ficheiro .nojekyll para GitHub Pages
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.githubpages',
+    'myst_parser',
 ]
 
+# Configura o Sphinx para reconhecer .md e .txt como Markdown
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
