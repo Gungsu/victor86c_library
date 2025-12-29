@@ -1,0 +1,72 @@
+# --- Python & Compilação ---
+# Ignora arquivos de bytecode compilados Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# --- Distribuição e Empacotamento ---
+# Ignora pastas geradas ao criar pacotes (setup.py)
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- PyInstaller ---
+# Ignora arquivos temporários do PyInstaller
+*.manifest
+*.spec
+
+# --- Logs de Instalação ---
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Relatórios de Teste e Cobertura ---
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# --- Documentação Sphinx ---
+# Ignora a pasta de build onde o HTML final é gerado
+docs/build/
+# NOTA: docs/source, docs/make.bat e docs/Makefile DEVEM ser mantidos no Git
+
+# --- Ambientes Virtuais ---
+# Ignora pastas de ambientes virtuais comuns
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# --- IDEs e Editores ---
+# Ignora configurações específicas de editores de código
+.vscode/
+.idea/
+*.swp

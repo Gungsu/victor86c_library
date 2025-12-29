@@ -31,4 +31,6 @@ setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.6',
+    # ... outros parâmetros
+    keywords=['multimeter', 'victor86c', 'victor86d', 'serial', 'dmm', 'instrumentation', 'automation', 'hardware'],
 )
