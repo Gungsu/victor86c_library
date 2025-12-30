@@ -9,7 +9,7 @@ except FileNotFoundError:
 
 setup(
     name='victor86c_parser',
-    version='1.0.1.1',
+    version='1.0.2',
     description='Biblioteca Python para decodificar o protocolo de comunicação serial do multímetro VICTOR 86C/86D.',
     long_description=long_description,
     long_description_content_type="text/markdown",

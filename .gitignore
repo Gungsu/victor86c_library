@@ -1,6 +1,7 @@
 # --- Python & Compilação ---
 # Ignora arquivos de bytecode compilados Python
 __pycache__/
+__pycache__/parser.cpython-312.pyc
 *.py[cod]
 *$py.class
 *.so
